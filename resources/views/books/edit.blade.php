@@ -1,52 +1,65 @@
 @extends('books.layout')
 @section('content')
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Edit Book</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="jumbotron d-none d-lg-block" style="background-color: greenyellow;">
+            <h1 class="fs-3 mt-4">Edit Book</h1>
+            <p class="lead mx-1">"I hid my deepest feelings so well I forgot where I placed them." <br>&nbsp;~Amy Tan~</p>
+            <hr class="my-4 text-success">
+        </div>
+        <div class="col-5 d-none d-lg-block border-end border-dark">
+            <div class="row p-5">
+                <div class="col-12">
+                    <div class="row">
+                        <img src="{{ asset('build/assets/prettyladydress.svg') }}" class="prettylady">
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form action="{{ url('books/' . $book->id) }}" method="post" onsubmit="return validateForm()">
-                        @csrf
-                        @method("PATCH")
-                        <input type="hidden" name="id" id="id" value="{{ $book->id }}" />
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="row mt-5 p-4 d-flex justify-content-center">
+                <div class="row mt-4">
+                    <div class="col-12 mb-2">
+                        <form action="{{ url('books/' . $book->id) }}" method="post" onsubmit="return validateForm()">
+                            @csrf
+                            @method("PUT")
+                            <input type="hidden" name="id" id="id" value="{{ $book->id }}" />
 
-                        <!-- Title -->
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" name="title" id="title" value="{{ $book->title }}" class="form-control">
-                            <div id="title-error" class="text-danger"></div>
-                        </div>
-                        
-                        <!-- Author -->
-                        <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" name="author" id="author" value="{{ $book->author }}" class="form-control">
-                            <div id="author-error" class="text-danger"></div>
-                        </div>
+                            <!-- Title -->
+                            <div class="col-12 mb-2">
+                                <label class="form-label">Title</label>
+                                <input type="text" name="title" id="title" value="{{ $book->title }}" class="form-control">
+                                <div id="title-error" class="text-danger"></div>
+                            </div>
 
-                        <!-- Published Date -->
-                        <div class="mb-3">
-                            <label for="publication_date" class="form-label">Published Date</label>
-                            <input type="date" name="publication_date" id="publication_date" value="{{ $book->publication_date }}" class="form-control">
-                            <div id="date-error" class="text-danger"></div>
-                        </div>
-                        
-                        <!-- Genre -->
-                        <div class="mb-3">
-                            <label for="genre" class="form-label">Genre</label>
-                            <input type="text" name="genre" id="genre" value="{{ $book->genre }}" class="form-control">
-                            <div id="genre-error" class="text-danger"></div>
-                        </div>
-                        
-                        <!-- Submit Button -->
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                    </form>
+                            <!-- Author -->
+                            <div class="col-12 mb-2">
+                                <label class="form-label">Author</label>
+                                <input type="text" name="author" id="author" value="{{ $book->author }}" class="form-control">
+                                <div id="author-error" class="text-danger"></div>
+                            </div>
+
+                            <!-- Published Date -->
+                            <div class="col-12 mb-2">
+                                <label class="form-label">Published Date</label>
+                                <input type="date" name="publication_date" id="publication_date" value="{{ $book->publication_date }}" class="form-control">
+                                <div id="date-error" class="text-danger"></div>
+                            </div>
+
+                            <!-- Genre -->
+                            <div class="col-12 mb-2">
+                                <label class="form-label">Genre</label>
+                                <input type="text" name="genre" id="genre" value="{{ $book->genre }}" class="form-control">
+                                <div id="genre-error" class="text-danger"></div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-12 d-grid mt-3">
+                                <button type="submit" class="btn btn-outline-success">Update</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
