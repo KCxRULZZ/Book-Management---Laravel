@@ -36,7 +36,9 @@ class BookController extends Controller
         return view('books.create');
     }
 
-    public function store(Request $request): RedirectResponse
+
+
+    public function store(Request $request)
     {
         // Validate the request data
         $validatedData = $request->validate([
@@ -45,12 +47,26 @@ class BookController extends Controller
             'genre' => 'required|string|max:255',
             'publication_date' => 'required|date|before_or_equal:today',
         ]);
-
+    
         // Create the book with validated data
-        Book::create($validatedData);
-
-        return redirect('books')->with('flash_message', 'Book Added!');
+        $book = Book::create($validatedData);
+    
+        // Check if the request expects a JSON response (AJAX request)
+        if ($request->expectsJson()) {
+            // Send a JSON response with a redirect URL
+            return response()->json([
+                'success' => true,
+                'message' => 'Book Added Successfully!',
+                'redirect' => route('books.index'), // Send the books index URL as a redirect
+            ]);
+        }
+    
+        // For normal form submissions (non-AJAX), redirect back to the books page
+        return redirect()->route('books.index')->with('flash_message', 'Book Added!');
     }
+    
+
+
 
     public function show(string $id): View
     {

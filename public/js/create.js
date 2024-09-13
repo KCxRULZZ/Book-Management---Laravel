@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('book-form');
-    
+
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent the default form submission
@@ -12,37 +12,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData,
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json'
+                    'Accept': 'application/json' // Expect JSON response
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    // Check if the response is not OK, handle error
+                    return response.json().then(errorData => Promise.reject(errorData));
+                }
+                return response.json();
+            })
             .then(data => {
+                if (data.success) {
+                    // Redirect to books page if successful
+                    window.location.href = data.redirect;
+                }
+            })
+            .catch(error => {
                 // Clear previous error messages
                 document.getElementById('title-error').innerText = '';
                 document.getElementById('author-error').innerText = '';
                 document.getElementById('date-error').innerText = '';
                 document.getElementById('genre-error').innerText = '';
 
-                if (data.errors) {
-                    // Display validation errors
-                    if (data.errors.title) {
-                        document.getElementById('title-error').innerText = data.errors.title[0];
+                // Display validation errors
+                if (error.errors) {
+                    if (error.errors.title) {
+                        document.getElementById('title-error').innerText = error.errors.title[0];
                     }
-                    if (data.errors.author) {
-                        document.getElementById('author-error').innerText = data.errors.author[0];
+                    if (error.errors.author) {
+                        document.getElementById('author-error').innerText = error.errors.author[0];
                     }
-                    if (data.errors.publication_date) {
-                        document.getElementById('date-error').innerText = data.errors.publication_date[0];
+                    if (error.errors.publication_date) {
+                        document.getElementById('date-error').innerText = error.errors.publication_date[0];
                     }
-                    if (data.errors.genre) {
-                        document.getElementById('genre-error').innerText = data.errors.genre[0];
+                    if (error.errors.genre) {
+                        document.getElementById('genre-error').innerText = error.errors.genre[0];
                     }
-                } else {
-                    // Redirect or handle successful response
-                    window.location.href = data.redirect; // Assuming your server sends a redirect URL
                 }
-            })
-            .catch(error => console.error('Error:', error));
+            });
         });
     }
 });

@@ -24,7 +24,7 @@
                 <!-- Edit Button -->
                 <a href="{{ url('books/' . $book->id . '/edit') }}" class="btn btn-warning">Edit</a>
                 <!-- Delete Button -->
-                <form method="POST" action="{{ url('/books/' . $book->id) }}" accept-charset="UTF-8" style="display:inline">
+                <form method="POST" action="{{ url('/books' . $book->id) }}" accept-charset="UTF-8" style="display:inline">
                     {{ method_field('DELETE') }}
                     {{ csrf_field() }}
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Confirm delete?')">Delete</button>
